@@ -16,9 +16,6 @@ namespace Matte_Seminarium_1
         private Vector2 mouseOrigin { get; set; }
         private float distance { get; set;}
 
-        //private bool mouseL;
-        //private bool space;
-
         private MouseState currentMouse { get; set; }
         private MouseState previousMouse { get; set; }
         private KeyboardState currentKeyboard { get; set; }
