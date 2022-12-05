@@ -39,7 +39,7 @@ namespace Matte_Seminarium_1
             spriteBatch.Draw(tex, hitBox, Color.White);
         }
 
-        public void CollisionCheck(Ball ball)
+        public bool CollisionCheck(Ball ball)
         {
             if(Vector2.Distance(Origin, ball.Origin) <= Radius + ball.Radius)
             {
@@ -54,17 +54,21 @@ namespace Matte_Seminarium_1
 
                 Velocity = new(newVelocityXA, newVelocityYA);
                 ball.Velocity = new(newVelocityXB, newVelocityYB);
+
+                return true;
             }
+
+            return false;
         }
 
-        public void Collision(Ball ball)
+       /* public void Collision(Ball ball)
         {
             if(Vector2.Distance(Origin, ball.Origin) <= Radius + ball.Radius)
             {
                 Collide(ball, this);
             }
-        }
-
+        }*/
+        /* Old collide
         private void Collide(Ball ballA, Ball ballB)
         {
             if (ballB != ballA)
@@ -105,8 +109,9 @@ namespace Matte_Seminarium_1
                 }
             }
 
-        }
+        }*/
 
+        /* Old penetration resets.
         //Makes the balls stop colliding.
         //They are placed next to each other instead based on the angle of the collision.
         private void PenetrationReset(Ball ballA, Ball ballB, float penetration)
@@ -124,7 +129,7 @@ namespace Matte_Seminarium_1
             float x = posA.X - posB.X;
             float y = posA.Y - posB.Y;
             return (-MathF.Atan2(x, y) * 180 / MathF.PI) + 90;
-        }
+        }*/
 
         public void WallCollision(int maxPosX, int maxPosY)
         {

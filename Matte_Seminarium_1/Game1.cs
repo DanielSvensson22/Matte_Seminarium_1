@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Matte_Seminarium_1
 {
@@ -12,6 +13,11 @@ namespace Matte_Seminarium_1
         GameState state = GameState.Executing;
 
         private Texture2D ballTex;
+        private SpriteFont font;
+
+        Timer timer = new();
+        private double hitTime;
+        private List<double> hitTimes = new();
 
         private Ball ballA;
         private Ball ballB;
@@ -35,10 +41,14 @@ namespace Matte_Seminarium_1
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-
-            if(state == GameState.Executing)
+            if(state == GameState.Preparing)
+            {
+                hitTimes.Clear();
+            }
+            else if(state == GameState.Executing)
             {
                 ballTex = Content.Load<Texture2D>("ball");
+                font = Content.Load<SpriteFont>("font");
 
                 ballA = new(ballTex, new(100, 100), 20, 1, new(0.05f, 0.1f));
                 ballB = new(ballTex, new(100, 300), 30, 2, new(-0.1f, -0.01f));
@@ -60,10 +70,16 @@ namespace Matte_Seminarium_1
 
             if (state == GameState.Executing)
             {
+                timer.Update(gameTime);
+
                 ballA.Update(gameTime);
                 ballB.Update(gameTime);
 
-                ballA.CollisionCheck(ballB);
+                if (ballA.CollisionCheck(ballB))
+                {
+                    hitTime = timer.time;
+                    hitTimes.Add(hitTime);
+                }
 
                 ballA.WallCollision(Window.ClientBounds.Width, Window.ClientBounds.Height);
                 ballB.WallCollision(Window.ClientBounds.Width, Window.ClientBounds.Height);
@@ -84,6 +100,11 @@ namespace Matte_Seminarium_1
             {
                 ballA.Draw(_spriteBatch);
                 ballB.Draw(_spriteBatch);
+
+                if(hitTimes.Count > 0)
+                {
+                    _spriteBatch.DrawString(font, $"Collision at {hitTimes[^1]} seconds.", new(10, Window.ClientBounds.Height - 20), Color.Gold);
+                }
             }
 
             _spriteBatch.End();
