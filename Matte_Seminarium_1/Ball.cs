@@ -41,6 +41,7 @@ namespace Matte_Seminarium_1
 
         public bool CollisionCheck(Ball ball)
         {
+            //Elastic collision.
             if(Vector2.Distance(Origin, ball.Origin) <= Radius + ball.Radius)
             {
                 float newVelocityXA = (Velocity.X * (Mass - ball.Mass) + (2 * ball.Mass * ball.Velocity.X)) / (Mass + ball.Mass);
@@ -131,6 +132,7 @@ namespace Matte_Seminarium_1
             return (-MathF.Atan2(x, y) * 180 / MathF.PI) + 90;
         }*/
 
+        //Keeps ball within screen borders.
         public void WallCollision(int maxPosX, int maxPosY)
         {
             if(Pos.X <= 0 || Pos.X >= maxPosX - hitBox.Width)

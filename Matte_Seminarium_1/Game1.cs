@@ -75,12 +75,14 @@ namespace Matte_Seminarium_1
                 ballA.Update(gameTime);
                 ballB.Update(gameTime);
 
+                //Checks for ball collisions.
                 if (ballA.CollisionCheck(ballB))
                 {
                     hitTime = timer.time;
                     hitTimes.Add(hitTime);
                 }
 
+                //Keeps balls within screen.
                 ballA.WallCollision(Window.ClientBounds.Width, Window.ClientBounds.Height);
                 ballB.WallCollision(Window.ClientBounds.Width, Window.ClientBounds.Height);
             }
@@ -101,6 +103,7 @@ namespace Matte_Seminarium_1
                 ballA.Draw(_spriteBatch);
                 ballB.Draw(_spriteBatch);
 
+                //Draws text describing when the balls collided.
                 if(hitTimes.Count > 0)
                 {
                     _spriteBatch.DrawString(font, $"Collision at {hitTimes[^1]} seconds.", new(10, Window.ClientBounds.Height - 20), Color.Gold);
