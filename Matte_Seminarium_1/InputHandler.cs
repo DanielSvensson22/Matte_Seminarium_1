@@ -85,6 +85,11 @@ namespace Matte_Seminarium_1
             get { return mousePosition; }
             set { mousePosition = value; }
         }
+        public virtual Point MousePoint
+        {
+            get { return MousePosition.ToPoint(); }
+            //set { mousePosition = value; }
+        }
 
         public virtual Vector2 Direction
         {

@@ -19,6 +19,9 @@ namespace Matte_Seminarium_1
         private double hitTime;
         private List<double> hitTimes = new();
 
+        private InputHandler inputHandler = new InputHandler();
+        private BallManager ballManager;
+
         private Ball ballA;
         private Ball ballB;
 
@@ -56,6 +59,10 @@ namespace Matte_Seminarium_1
 
                 ballA = new(ballTex, new(100, 100), 20, 1, new(0.05f, 0.1f));
                 ballB = new(ballTex, new(100, 300), 30, 1, new(-0.1f, -0.01f));
+
+                ballManager = new BallManager(this);
+                ballManager.BallList.Add(ballA);
+                ballManager.BallList.Add(ballB);
             }
         }
 
@@ -72,23 +79,31 @@ namespace Matte_Seminarium_1
                 LoadContent();
             }
 
+            inputHandler.Update(gameTime);
+
             if (state == GameState.Executing)
             {
                 timer.Update(gameTime);
+                ballManager.Update(gameTime);
+                if(inputHandler.CurrentMouseL && ballManager.PickBall(inputHandler.MousePoint)) { state = GameState.Modifying; }
+                //ballA.Update(gameTime);
+                //ballB.Update(gameTime);
 
-                ballA.Update(gameTime);
-                ballB.Update(gameTime);
+                ////Checks for ball collisions.
+                //if (ballA.CollisionCheck(ballB))
+                //{
+                //    hitTime = timer.time;
+                //    hitTimes.Add(hitTime);
+                //}
 
-                //Checks for ball collisions.
-                if (ballA.CollisionCheck(ballB))
-                {
-                    hitTime = timer.time;
-                    hitTimes.Add(hitTime);
-                }
+                ////Keeps balls within screen.
+                //ballA.WallCollision(Window.ClientBounds.Width, Window.ClientBounds.Height);
+                //ballB.WallCollision(Window.ClientBounds.Width, Window.ClientBounds.Height);
+            }
 
-                //Keeps balls within screen.
-                ballA.WallCollision(Window.ClientBounds.Width, Window.ClientBounds.Height);
-                ballB.WallCollision(Window.ClientBounds.Width, Window.ClientBounds.Height);
+            if(state == GameState.Modifying)
+            {
+                if (!inputHandler.CurrentMouseL) { ballManager.SetProperties(inputHandler.MousePosition); state = GameState.Executing; }
             }
 
             base.Update(gameTime);
@@ -102,10 +117,11 @@ namespace Matte_Seminarium_1
 
             _spriteBatch.Begin();
 
-            if (state == GameState.Executing)
+            if (state == GameState.Executing || state == GameState.Modifying)
             {
-                ballA.Draw(_spriteBatch);
-                ballB.Draw(_spriteBatch);
+                ballManager.Draw(_spriteBatch);
+                //ballA.Draw(_spriteBatch);
+                //ballB.Draw(_spriteBatch);
 
                 //Draws text describing when the balls collided.
                 if(hitTimes.Count > 0)
@@ -119,10 +135,30 @@ namespace Matte_Seminarium_1
             base.Draw(gameTime);
         }
 
-        enum GameState
+        public enum GameState
         {
             Preparing,
             Executing,
+            Modifying,
+        }
+
+        public double HitTime
+        {
+            get { return hitTime; }
+            set { hitTime = value; }
+        }
+        public Timer Timer
+        {
+            get { return timer; }
+        }
+        public List<double> HitTimes
+        {
+            get { return hitTimes; }
+        }
+        public GameState State
+        {
+            get { return state; }
+            set { state = value; }
         }
     }
 }
