@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Matte_Seminarium_1
 {
-    internal class InputHandler
+    public class InputHandler
     {
         private Timer timer = new();
 
@@ -111,10 +105,15 @@ namespace Matte_Seminarium_1
             set { mousePosition = value; }
         }
 
+        public virtual Point MousePoint
+        {
+            get { return MousePosition.ToPoint(); }
+        }
+
         public virtual Vector2 Direction
         {
             get { return direction; }
-            set { direction = value; /*direction.Normalize();*/ }
+            set { direction = value; }
         }
         
         public virtual float Distance

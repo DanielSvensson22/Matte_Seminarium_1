@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Matte_Seminarium_1
 {
@@ -144,6 +143,11 @@ namespace Matte_Seminarium_1
             {
                 Velocity = new(Velocity.X, Velocity.Y * -1);
             }
+        }
+
+        public Rectangle HitBox
+        {
+            get { return hitBox; }
         }
     }
 }

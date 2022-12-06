@@ -28,6 +28,7 @@ namespace Matte_Seminarium_1
         private float radiusB;
 
         private InputHandler inputHandler = new();
+        private BallManager ballManager;
 
         public Game1()
         {
@@ -72,6 +73,10 @@ namespace Matte_Seminarium_1
 
                 ballA = new(ballTex, new(100, 100), radiusA, 1, new(0.1f, 0.1f));
                 ballB = new(ballTex, new(300, 300), radiusB, 1, new(-0.1f, -0.1f));
+
+                ballManager = new BallManager(this);
+                ballManager.BallList.Add(ballA);
+                ballManager.BallList.Add(ballB);
             }
         }
 
@@ -105,28 +110,22 @@ namespace Matte_Seminarium_1
             {
                 timer.Update(gameTime);
 
-                ballA.Update(gameTime);
-                ballB.Update(gameTime);
+                ballManager.Update(gameTime);
 
-                //Checks for ball collisions.
-                if (ballA.CollisionCheck(ballB))
-                {
-                    hitTime = timer.time;
-                    hitTimes.Add(hitTime);
-
-                    ballAHits.Add(ballA.Origin);
-                    ballBHits.Add(ballB.Origin);
+                if (inputHandler.CurrentMouseL && ballManager.PickBall(inputHandler.MousePoint)) 
+                { 
+                    state = GameState.Modifying; 
                 }
-
-                //Keeps balls within screen.
-                ballA.WallCollision(Window.ClientBounds.Width, Window.ClientBounds.Height);
-                ballB.WallCollision(Window.ClientBounds.Width, Window.ClientBounds.Height);
 
                 if (Keyboard.GetState().IsKeyDown(Keys.L))
                 {
                     state = GameState.ListInspection;
                     LoadContent();
                 }
+            }
+            else if (state == GameState.Modifying)
+            {
+                if (!inputHandler.CurrentMouseL) { ballManager.SetProperties(inputHandler.MousePosition); state = GameState.Executing; }
             }
 
             base.Update(gameTime);
@@ -146,13 +145,12 @@ namespace Matte_Seminarium_1
 
                 _spriteBatch.DrawString(font, $"Radius of ball B: {radiusB}", new(400, 400), Color.Orange);
             }
-            else if (state == GameState.Executing)
+            else if (state == GameState.Executing || state == GameState.Modifying)
             {
-                ballA.Draw(_spriteBatch);
-                ballB.Draw(_spriteBatch);
+                ballManager.Draw(_spriteBatch);
 
                 //Draws text describing when the balls collided.
-                if(hitTimes.Count > 0)
+                if (hitTimes.Count > 0)
                 {
                     _spriteBatch.DrawString(font, $"Collision at {hitTimes[^1]} seconds.", new(10, Window.ClientBounds.Height - 20), Color.Gold);
                 }
@@ -180,10 +178,43 @@ namespace Matte_Seminarium_1
             base.Draw(gameTime);
         }
 
-        enum GameState
+        public double HitTime
+        {
+            get { return hitTime; }
+            set { hitTime = value; }
+        }
+
+        public Timer Timer
+        {
+            get { return timer; }
+        }
+
+        public List<double> HitTimes
+        {
+            get { return hitTimes; }
+        }
+
+        public List<Vector2> BallAHits
+        {
+            get { return ballAHits; }
+        }
+
+        public List<Vector2> BallBHits
+        {
+            get { return ballBHits; }
+        }
+
+        public GameState State
+        {
+            get { return state; }
+            set { state = value; }
+        }
+
+        public enum GameState
         {
             Preparing,
             Executing,
+            Modifying,
             ListInspection,
         }
     }
