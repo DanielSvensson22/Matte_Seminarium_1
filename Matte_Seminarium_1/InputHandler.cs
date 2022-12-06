@@ -11,6 +11,8 @@ namespace Matte_Seminarium_1
 {
     internal class InputHandler
     {
+        private Timer timer = new();
+
         private Vector2 direction { get; set; }
         private Vector2 mousePosition { get; set; }
         private Vector2 mouseOrigin { get; set; }
@@ -25,6 +27,8 @@ namespace Matte_Seminarium_1
         {
             UpdateStates();
             UpdateValues();
+
+            timer.Update(gameTime);
         }
 
         private void UpdateStates()
@@ -72,6 +76,27 @@ namespace Matte_Seminarium_1
         public virtual bool SpaceDown
         {
             get { if (CurrentKeyboard.IsKeyDown(Keys.Space)) { return true; } else { return false; } }
+        }
+
+        public float RadiusChange(Keys increaseKey, Keys decreaseKey)
+        {
+            if(timer.time > 0.1)
+            {
+                if (CurrentKeyboard.IsKeyDown(increaseKey))
+                {
+                    timer.time = 0;
+
+                    return 1;
+                }
+                else if (CurrentKeyboard.IsKeyDown(decreaseKey))
+                {
+                    timer.time = 0;
+
+                    return -1;
+                }
+            }
+
+            return 0;
         }
 
         public virtual Vector2 MouseOrigin
