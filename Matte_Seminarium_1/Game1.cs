@@ -27,6 +27,10 @@ namespace Matte_Seminarium_1
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            _graphics.PreferredBackBufferWidth = 1000;
+            _graphics.PreferredBackBufferHeight = 500;
+            _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
