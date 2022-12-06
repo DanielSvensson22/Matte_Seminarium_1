@@ -51,7 +51,7 @@ namespace Matte_Seminarium_1
                 font = Content.Load<SpriteFont>("font");
 
                 ballA = new(ballTex, new(100, 100), 20, 1, new(0.05f, 0.1f));
-                ballB = new(ballTex, new(100, 300), 30, 2, new(-0.1f, -0.01f));
+                ballB = new(ballTex, new(100, 300), 30, 1, new(-0.1f, -0.01f));
             }
         }
 
