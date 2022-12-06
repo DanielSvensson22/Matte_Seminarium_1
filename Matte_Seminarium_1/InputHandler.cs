@@ -89,7 +89,7 @@ namespace Matte_Seminarium_1
         public virtual Vector2 Direction
         {
             get { return direction; }
-            set { direction = value; direction.Normalize(); }
+            set { direction = value; /*direction.Normalize();*/ }
         }
         
         public virtual float Distance
