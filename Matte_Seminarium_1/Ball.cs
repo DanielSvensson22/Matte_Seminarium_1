@@ -9,7 +9,8 @@ namespace Matte_Seminarium_1
         public float Radius { get; private set; }
         public float Mass { get; private set; }
         public Vector2 Pos { get; set; }
-        public  Vector2 Velocity { get; set; }
+        public Vector2 Velocity { get; set; }
+        public Vector2 previousVelocity { get; set; }
         public Vector2 Origin { get; private set; }
 
         private Rectangle hitBox;
@@ -43,6 +44,9 @@ namespace Matte_Seminarium_1
             //Elastic collision.
             if(Vector2.Distance(Origin, ball.Origin) <= Radius + ball.Radius)
             {
+                previousVelocity = Velocity;
+                ball.PreviousVelocity = ball.Velocity;
+
                 float newVelocityXA = (Velocity.X * (Mass - ball.Mass) + (2 * ball.Mass * ball.Velocity.X)) / (Mass + ball.Mass);
                 float newVelocityYA = (Velocity.Y * (Mass - ball.Mass) + (2 * ball.Mass * ball.Velocity.Y)) / (Mass + ball.Mass);
 
@@ -148,6 +152,12 @@ namespace Matte_Seminarium_1
         public Rectangle HitBox
         {
             get { return hitBox; }
+        }
+
+        public virtual Vector2 PreviousVelocity
+        {
+            get { return previousVelocity; }
+            set { previousVelocity = value; }
         }
     }
 }

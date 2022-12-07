@@ -153,6 +153,9 @@ namespace Matte_Seminarium_1
                 if (hitTimes.Count > 0)
                 {
                     _spriteBatch.DrawString(font, $"Collision at {hitTimes[^1]} seconds.", new(10, Window.ClientBounds.Height - 20), Color.Gold);
+
+                    _spriteBatch.DrawString(font, $"Collision Distance: {ballManager.CollisionDistance} / {ballManager.CombinedRadius}", new(10, Window.ClientBounds.Height - 60), Color.Orange);
+                    _spriteBatch.DrawString(font, $"Collision Point: {ballManager.CollisionPoint}", new(10, Window.ClientBounds.Height - 40), Color.Orange);
                 }
             }
             else if(state == GameState.ListInspection)
@@ -171,6 +174,7 @@ namespace Matte_Seminarium_1
                 {
                     _spriteBatch.DrawString(font, $"Ball B collided at coordinates: {(int)ballBHits[i].X}; {(int)ballBHits[i].Y}", new(600, 10 + 20 * i), Color.Orange);
                 }
+
             }
 
             _spriteBatch.End();
