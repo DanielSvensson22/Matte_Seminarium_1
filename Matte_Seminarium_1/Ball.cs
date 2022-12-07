@@ -6,12 +6,19 @@ namespace Matte_Seminarium_1
     public class Ball
     {
         private readonly Texture2D tex;
+
         public float Radius { get; private set; }
+
         public float Mass { get; private set; }
+
         public Vector2 Pos { get; set; }
+
         public Vector2 Velocity { get; set; }
-        public Vector2 previousVelocity { get; set; }
+
+        private Vector2 previousVelocity;
+
         public Vector2 Origin { get; private set; }
+
 
         private Rectangle hitBox;
 

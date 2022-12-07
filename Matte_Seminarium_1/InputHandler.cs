@@ -67,12 +67,7 @@ namespace Matte_Seminarium_1
             get { if (PreviousMouse.LeftButton == ButtonState.Pressed) { return true; } else { return false; } }
         }
 
-        public virtual bool SpaceDown
-        {
-            get { if (CurrentKeyboard.IsKeyDown(Keys.Space)) { return true; } else { return false; } }
-        }
-
-        public float RadiusChange(Keys increaseKey, Keys decreaseKey)
+        public float ValueChange(Keys increaseKey, Keys decreaseKey, float changeInValue)
         {
             if(timer.time > 0.1)
             {
@@ -80,13 +75,13 @@ namespace Matte_Seminarium_1
                 {
                     timer.time = 0;
 
-                    return 1;
+                    return changeInValue;
                 }
                 else if (CurrentKeyboard.IsKeyDown(decreaseKey))
                 {
                     timer.time = 0;
 
-                    return -1;
+                    return -changeInValue;
                 }
             }
 

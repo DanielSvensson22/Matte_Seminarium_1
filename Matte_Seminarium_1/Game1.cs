@@ -27,6 +27,12 @@ namespace Matte_Seminarium_1
         private float radiusA;
         private float radiusB;
 
+        private Vector2 velocityA;
+        private Vector2 velocityB;
+
+        private Vector2 positionA;
+        private Vector2 positionB;
+
         private InputHandler inputHandler = new();
         private BallManager ballManager;
 
@@ -63,6 +69,12 @@ namespace Matte_Seminarium_1
                 radiusA = 20;
                 radiusB = 20;
 
+                velocityA = new(0.1f, 0.1f);
+                velocityB = new(-0.1f, -0.1f);
+
+                positionA = new(100, 100);
+                positionB = new(300, 300);
+
                 hitTimes.Clear();
                 ballAHits.Clear();
                 ballBHits.Clear();
@@ -71,8 +83,8 @@ namespace Matte_Seminarium_1
             {
                 ballTex = Content.Load<Texture2D>("ball");
 
-                ballA = new(ballTex, new(100, 100), radiusA, 1, new(0.1f, 0.1f));
-                ballB = new(ballTex, new(300, 300), radiusB, 1, new(-0.1f, -0.1f));
+                ballA = new(ballTex, positionA, radiusA, 1, velocityA);
+                ballB = new(ballTex, positionB, radiusB, 1, velocityB);
 
                 ballManager = new BallManager(this);
                 ballManager.BallList.Add(ballA);
@@ -103,8 +115,20 @@ namespace Matte_Seminarium_1
                     LoadContent();
                 }
 
-                radiusA += inputHandler.RadiusChange(Keys.S, Keys.A);
-                radiusB += inputHandler.RadiusChange(Keys.X, Keys.Z);
+                radiusA += inputHandler.ValueChange(Keys.S, Keys.A, 1);
+                radiusB += inputHandler.ValueChange(Keys.X, Keys.Z, 1);
+
+                velocityA.X += inputHandler.ValueChange(Keys.W, Keys.Q, 0.1f);
+                velocityA.Y += inputHandler.ValueChange(Keys.R, Keys.E, 0.1f);
+
+                velocityB.X += inputHandler.ValueChange(Keys.Y, Keys.T, 0.1f);
+                velocityB.Y += inputHandler.ValueChange(Keys.I, Keys.U, 0.1f);
+
+                positionA.X += inputHandler.ValueChange(Keys.D0, Keys.O, 1);
+                positionA.Y += inputHandler.ValueChange(Keys.G, Keys.F, 1);
+
+                positionB.X += inputHandler.ValueChange(Keys.J, Keys.H, 1);
+                positionB.Y += inputHandler.ValueChange(Keys.L, Keys.K, 1);
             }
             else if (state == GameState.Executing)
             {
@@ -141,9 +165,17 @@ namespace Matte_Seminarium_1
 
             if(state == GameState.Preparing)
             {
-                _spriteBatch.DrawString(font, $"Radius of ball A: {radiusA}", new(400, 200), Color.Red);
+                _spriteBatch.DrawString(font, $"Radius of ball A: {radiusA}", new(10, 10), Color.Red);
 
-                _spriteBatch.DrawString(font, $"Radius of ball B: {radiusB}", new(400, 400), Color.Orange);
+                _spriteBatch.DrawString(font, $"Radius of ball B: {radiusB}", new(10, 50), Color.Orange);
+
+                _spriteBatch.DrawString(font, $"Velocity of ball A: {velocityA}", new(300, 10), Color.Red);
+
+                _spriteBatch.DrawString(font, $"Velocity of ball B: {velocityB}", new(300, 50), Color.Orange);
+
+                _spriteBatch.DrawString(font, $"Position of ball A: {positionA}", new(700, 10), Color.Red);
+
+                _spriteBatch.DrawString(font, $"Position of ball B: {positionB}", new(700, 50), Color.Orange);
             }
             else if (state == GameState.Executing || state == GameState.Modifying)
             {
