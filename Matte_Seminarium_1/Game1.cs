@@ -186,7 +186,8 @@ namespace Matte_Seminarium_1
                 {
                     _spriteBatch.DrawString(font, $"Collision at {hitTimes[^1]} seconds.", new(10, Window.ClientBounds.Height - 20), Color.Gold);
 
-                    _spriteBatch.DrawString(font, $"Collision Distance: {ballManager.CollisionDistance} / {ballManager.CombinedRadius}", new(10, Window.ClientBounds.Height - 60), Color.Orange);
+                    //_spriteBatch.DrawString(font, $"Collision Distance: {ballManager.CollisionDistance} / {ballManager.CombinedRadius}", new(10, Window.ClientBounds.Height - 60), Color.Orange);
+
                     _spriteBatch.DrawString(font, $"Collision Point: {ballManager.CollisionPoint}", new(10, Window.ClientBounds.Height - 40), Color.Orange);
                 }
             }

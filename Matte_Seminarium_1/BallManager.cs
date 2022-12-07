@@ -12,12 +12,13 @@ namespace Matte_Seminarium_1
         private Ball currentBall;
         private bool collision;
 
-        Vector2 tempPos1;
-        Vector2 tempPos2;
-        Vector2 tempVel1;
-        Vector2 tempVel2;
+        //Vector2 tempPos1;
+        //Vector2 tempPos2;
+        //Vector2 tempVel1;
+        //Vector2 tempVel2;
+
         Vector2 collisionPoint;
-        float collisionDistance;
+        //float collisionDistance;
 
         public BallManager(Game1 game)
         {
@@ -41,14 +42,17 @@ namespace Matte_Seminarium_1
                 game.BallAHits.Add(BallList[0].Origin);
                 game.BallBHits.Add(BallList[1].Origin);
 
-                tempPos1 = BallList[0].Origin;
-                tempPos2 = BallList[1].Origin;
-                tempVel1 = BallList[0].PreviousVelocity;
-                tempVel2 = BallList[1].PreviousVelocity;
                 collision = true;
+
+                /*stuff
+                //tempPos1 = BallList[0].Origin;
+                //tempPos2 = BallList[1].Origin;
+                //tempVel1 = BallList[0].PreviousVelocity;
+                //tempVel2 = BallList[1].PreviousVelocity;
+                */
             }
 
-            if (collision) { CalculatePoint(gameTime); }
+            if (collision) { GiveCollisionPoint(); }
 
         }
 
@@ -79,13 +83,14 @@ namespace Matte_Seminarium_1
             get { return collisionPoint; }
             set { collisionPoint = value; }
         }
-        public virtual float CollisionDistance
-        {
-            get { return collisionDistance; }
-            set { collisionDistance = value; }
-        }
 
-        public virtual float CombinedRadius { get { return BallList[0].Radius + BallList[1].Radius; } }
+        //public virtual float CollisionDistance
+        //{
+        //    get { return collisionDistance; }
+        //    set { collisionDistance = value; }
+        //}
+
+        //public virtual float CombinedRadius { get { return BallList[0].Radius + BallList[1].Radius; } }
         
 
         public virtual bool PickBall(Point mousePoint)
@@ -109,23 +114,29 @@ namespace Matte_Seminarium_1
             CurrentBall = null;
         }
 
-        public void CalculatePoint(GameTime gameTime)
+        //public void CalculatePoint(GameTime gameTime)
+        //{
+        //    CollisionDistance = Vector2.Distance(tempPos1, tempPos2);
+        //    if (CollisionDistance < BallList[0].Radius + BallList[1].Radius)
+        //    {
+        //        tempPos1 -= tempVel1 * 0.001f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+        //        tempPos2 -= tempVel2 * 0.001f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+        //    }
+        //    else
+        //    {
+        //        Vector2 dir = (tempPos2 - tempPos1);
+        //        dir.Normalize();
+        //        CollisionPoint = tempPos1 + dir * BallList[0].Radius;
+        //        collision = false;
+        //    }
+        //}
+
+        private void GiveCollisionPoint()
         {
-            CollisionDistance = Vector2.Distance(tempPos1, tempPos2);
-            if (CollisionDistance < BallList[0].Radius + BallList[1].Radius)
-            {
-                tempPos1 -= tempVel1 * 0.001f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-                tempPos2 -= tempVel2 * 0.001f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            }
-            else
-            {
-                Vector2 dir = (tempPos2 - tempPos1);
-                dir.Normalize();
-                CollisionPoint = tempPos1 + dir * BallList[0].Radius;
-                collision = false;
-            }
+            collisionPoint.X = ((BallList[0].Pos.X * BallList[1].Radius) + (BallList[1].Pos.X * BallList[0].Radius)) / (BallList[0].Radius + BallList[1].Radius);
+            collisionPoint.Y = ((BallList[0].Pos.Y * BallList[1].Radius) + (BallList[1].Pos.Y * BallList[0].Radius)) / (BallList[0].Radius + BallList[1].Radius);
+
+            collision = false;
         }
-
-
     }
 }
