@@ -133,8 +133,8 @@ namespace Matte_Seminarium_1
 
         private void GiveCollisionPoint()
         {
-            collisionPoint.X = ((BallList[0].Pos.X * BallList[1].Radius) + (BallList[1].Pos.X * BallList[0].Radius)) / (BallList[0].Radius + BallList[1].Radius);
-            collisionPoint.Y = ((BallList[0].Pos.Y * BallList[1].Radius) + (BallList[1].Pos.Y * BallList[0].Radius)) / (BallList[0].Radius + BallList[1].Radius);
+            collisionPoint.X = ((BallList[0].Origin.X * BallList[1].Radius) + (BallList[1].Origin.X * BallList[0].Radius)) / (BallList[0].Radius + BallList[1].Radius);
+            collisionPoint.Y = ((BallList[0].Origin.Y * BallList[1].Radius) + (BallList[1].Origin.Y * BallList[0].Radius)) / (BallList[0].Radius + BallList[1].Radius);
 
             collision = false;
         }
